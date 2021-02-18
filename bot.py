@@ -83,7 +83,7 @@ class word_search():
 
 def BuildMessage(word_searchArray):
     """
-        if LINKS_IN_MESSAGE is comments and links
+        if LINKS_IN_MESSAGE True it links
         will be included in the message
         RETURNS ARRAY OF STRINGS
 
