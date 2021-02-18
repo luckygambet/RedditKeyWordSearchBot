@@ -281,5 +281,6 @@ while True:
     if MY_SUBREDDIT != "":
         print("Posting results to subreddit")
         PostToSubreddit(wordsearchResults)
+        print("Done!")
 
     time.sleep(TIME_BETWEEN_SCANS)
