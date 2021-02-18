@@ -14,9 +14,9 @@ reddit = praw.Reddit(client_id="",
                     username="",
                     password="")
 
-USERNAME = ["UnbanCatgirls", "lucky_124"]           # will send message to these users
+USERNAME = ["UnbanCatgirls", "lucky_124"]           #will send message to these users
 
-MY_SUBREDDIT = ""                                   # will post results with links
+MY_SUBREDDIT = ""                                   #will post results with links
                                                     #to this subreddit as a text post
                                                     #leave blank till ready
 
@@ -24,9 +24,9 @@ SUBREDDIT_TARGETS = ["asxbets", "ASX", "ASX_Bets"]
 
 WORDS = ["LKE", "TNT", "PEN", "XST", "ASX", "rocket", "moon", "mooning"]
 
-REGEX_MATCH_STR = "[.| |,|s|?]"                     # Will match " {WORD}"+ any of these(. ,s?)
+REGEX_MATCH_STR = "[.| |,|s|?]"                     #will match " {WORD}"+ any of these(. ,s?)
 
-CASE_SENSITIVE_MATCH = True                         # if this is true it will match
+CASE_SENSITIVE_MATCH = True                         #if this is true it will match
                                                     #words as defined in WORDS
                                                     #if this is false it will match
                                                     #UPPERCASE to UPPERCASE
@@ -34,7 +34,7 @@ CASE_SENSITIVE_MATCH = True                         # if this is true it will ma
                                                     #including the post and match
 
 POST_TIME_LIMIT = (datetime.datetime.today()
-                - datetime.timedelta(days=1))       # will only match post within
+                - datetime.timedelta(days=1))       #will only match post within
                                                     #24 hours of posting
                                                     #can be swapped with these keywords
                                                     #days #seconds
@@ -48,22 +48,22 @@ MESSAGE_FORMAT = "KEYWORD : {} / {}\n\n"            # this is the message format
 
 
 
-SUBREDDIT_SEARCH_LIMIT = 100                        # MAX = 100 sorts by hot
+SUBREDDIT_SEARCH_LIMIT = 100                        #MAX = 100 sorts by hot
 
-APPEARANCE_LIMIT = 5                                # if the word has appeared less then x times
+APPEARANCE_LIMIT = 5                                #if the word has appeared less then x times
                                                     #it wont be included in the message
 
-MESSAGE_RATE_LIMIT = 2                              # in seconds
+MESSAGE_RATE_LIMIT = 2                              #in seconds
                                                     #you may have to send more then 1 message
                                                     #due to reddit message character limit (MAX==10000)
                                                     #the api may limit you due to sending to quick
       
 #60 * 60 * 24 = 86400 secs == 1 day
-TIME_BETWEEN_SCANS = (60*60)*24                     # in seconds
+TIME_BETWEEN_SCANS = (60*60)*24                     #in seconds
                                                     #time to wait before scaning SUBREDDIT_TARGETS
                                                     #and sending a message to the user
 
-LINKS_IN_MESSAGE = False                            # if true will add a link to where
+LINKS_IN_MESSAGE = False                            #if true will add a link to where
                                                     #the comment was found
                                                     #WARNING BIG MESSAGES!
 
