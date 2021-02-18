@@ -229,7 +229,7 @@ def SearchSubredditForKeyWords():
                 if post.created_utc < POST_TIME_LIMIT.timestamp():  # if post was not created within
                     continue  # the time limit it will be ignored
                 for search in word_searchArray:
-                    #check if the 1st word it any word we are searching
+                    #check if the 1st word is any word we are searching
                     #we need to do this because we are searching for
                     #spaces in front of our word in the next few lines
                     if search.SWord == post.body[0:len(search.SWord)]:
