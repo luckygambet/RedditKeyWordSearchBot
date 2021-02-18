@@ -229,24 +229,32 @@ def SearchSubredditForKeyWords():
                 if post.created_utc < POST_TIME_LIMIT.timestamp():  # if post was not created within
                     continue  # the time limit it will be ignored
                 for search in word_searchArray:
-                    #check if comment contains any word we are searching
-                    #will match " {WORD}(. ,S?)"
-                    searchResult = []
-                    if CASE_SENSITIVE_MATCH == False:#check if word is all uppercase for stock tickers
-                        if search.SWord.isupper():  # case INSENSITIVE match
-                            searchResult = re.findall(
-                                " "+search.SWord+REGEX_MATCH_STR, post.body)
-                        else:  # case INSENSITIVE match
-                            searchResult = re.findall(
-                                " "+search.SWord.lower()+REGEX_MATCH_STR, post.body.lower())
-                    else:  # case SENSITIVE match
-                        searchResult = re.findall(
-                            " "+search.SWord+REGEX_MATCH_STR, post.body)
-
-                    if len(searchResult) > 0:  # update the word search if match is found
+                    #check if the 1st word it any word we are searching
+                    #we need to do this because we are searching for
+                    #spaces in front of our word in the next few lines
+                    if search.SWord == post.body[0:len(search.SWord)]:
                         search.AppearenceLocations.append(post)
                         search.Appearences += 1
+                    else:
+                        #check if comment contains any word we are searching
+                        #will match " {WORD}(. ,S?)"
+                        searchResult = []
+                        if CASE_SENSITIVE_MATCH == False:#check if word is all uppercase for stock tickers
+                            if search.SWord.isupper():  # case INSENSITIVE match
+                                searchResult = re.findall(
+                                    " "+search.SWord+REGEX_MATCH_STR, post.body)
+                            else:  # case INSENSITIVE match
+                                searchResult = re.findall(
+                                    " "+search.SWord.lower()+REGEX_MATCH_STR, post.body.lower())
+                        else:  # case SENSITIVE match
+                            searchResult = re.findall(
+                                " "+search.SWord+REGEX_MATCH_STR, post.body)
+
+                        if len(searchResult) > 0:  # update the word search if match is found
+                            search.AppearenceLocations.append(post)
+                            search.Appearences += 1
     return word_searchArray
+
 
 
 def GetAndSend():
