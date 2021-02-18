@@ -57,8 +57,8 @@ MESSAGE_RATE_LIMIT = 2                              # in seconds
                                                     #you may have to send more then 1 message
                                                     #due to reddit message character limit (MAX==10000)
                                                     #the api may limit you due to sending to quick
-                                                    #60 * 60 * 24 = 86400 secs == 1 day
-
+      
+#60 * 60 * 24 = 86400 secs == 1 day
 TIME_BETWEEN_SCANS = (60*60)*24                     # in seconds
                                                     #time to wait before scaning SUBREDDIT_TARGETS
                                                     #and sending a message to the user
