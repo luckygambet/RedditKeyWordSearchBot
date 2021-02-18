@@ -34,7 +34,7 @@ CASE_SENSITIVE_MATCH = True                         # if this is true it will ma
                                                     #including the post and match
 
 POST_TIME_LIMIT = (datetime.datetime.today()
-                - datetime.timedelta(days=1))    # will only match post within
+                - datetime.timedelta(days=1))       # will only match post within
                                                     #24 hours of posting
                                                     #can be swapped with these keywords
                                                     #days #seconds
