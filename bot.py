@@ -14,7 +14,7 @@ reddit = praw.Reddit(client_id="",
                     username="",
                     password="")
 
-USERNAME = ["UnbanCatgirls", "lucky_124"]           #will send message to these users
+USERNAME = ["lucky_124"]           #will send message to these users
 
 MY_SUBREDDIT = ""                                   #will post results with links
                                                     #to this subreddit as a text post
