@@ -62,7 +62,7 @@ POST_TIME_LIMIT = (datetime.datetime.today()
                                                             #minute #hours
                                                             #weeks
 
-SUBREDDIT_SEARCH_LIMIT = 2                                  #MAX = 100 sorts by hot
+SUBREDDIT_SEARCH_LIMIT = 100                                #sorts by hot
 
 APPEARANCE_LIMIT = 1                                        #if the word has appeared less then x times
                                                             #it wont be included in the file
