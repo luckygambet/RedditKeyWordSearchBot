@@ -23,10 +23,10 @@ SUBREDDIT_TARGETS = ["personalfinance"]
 WORDS = []
                                             
 CSV_FILE_NAME = "nasdaq_screener_1614053192716.csv"#want to load in a set of words?
-CSV_ROW = 0                                        #just change these to match
+CSV_COL = 0                                        #just change these to match
                                                    #example
                                                    #"nasdaq_screener_1614053192716.csv"
-                                                   #0  | ROW 1 START AT ZERO
+                                                   #0  | COL 1 START AT ZERO
                                                    #will load in NASDAQ CSV file
 
 REGEX_MATCH_STR = "[.| |,|s|?]"                    #Will match " {WORD}"+ any of these(. ,s?)
@@ -224,7 +224,7 @@ while True:
     start = time.time()
 
     if CSV_FILE_NAME != "":
-        WORDS = OpenCSV(CSV_FILE_NAME,CSV_ROW)
+        WORDS = OpenCSV(CSV_FILE_NAME,CSV_COL)
     wordsearchResults = GetAndSave()
 
     end = time.time()
