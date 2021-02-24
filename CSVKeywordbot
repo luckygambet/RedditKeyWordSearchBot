@@ -9,54 +9,68 @@ import csv
 #THEN SAVE THAT DATA TO A CSV FILE WITH 
 #APPEARENCES SEPERRATED BY DAYS
 
+
+#EXAMPLE TABLE
+##------------------------------------------------------------#
+#| WORD | APPEARENCES |    DATE    | APPEARENCES |    DATE    |     
+#|------------------------------------------------------------|
+#| AMC  |      10     | 2/24/2021  |      13     | 2/25/2021  |
+#|------------------------------------------------------------|
+#| GME  |      5      | 2/24/2021  |      10     | 2/25/2021  |
+#|------------------------------------------------------------|
+#| LNK  |      1      | 2/24/2021  |             |            |
+##------------------------------------------------------------#
+
+
 #---------------------------------/setup/---------------------------------------
 
+
 reddit = praw.Reddit(client_id     =   "",
-                    client_secret =   "",
-                    user_agent    =   "",
-                    username      =   "",
-                    password      =   "")
+                     client_secret =   "",
+                     user_agent    =   "",
+                     username      =   "",
+                     password      =   "")
 
 
 SUBREDDIT_TARGETS = ["personalfinance"]
 
 WORDS = []
                                             
-CSV_FILE_NAME = "nasdaq_screener_1614053192716.csv"#want to load in a set of words?
-CSV_COL = 0                                        #just change these to match
-                                                   #example
-                                                   #"nasdaq_screener_1614053192716.csv"
-                                                   #0  | COL 1 START AT ZERO
-                                                   #will load in NASDAQ CSV file
+CSV_FILE_NAME = "nasdaq_screener_1614053192716.csv"         #want to load in a set of words?
+CSV_COL = 0                                                 #just change these to match
+                                                            #example
+                                                            #"nasdaq_screener_1614053192716.csv"
+                                                            #0  | COL 1 START AT ZERO
+                                                            #will load in NASDAQ CSV file
 
-REGEX_MATCH_STR = "[.| |,|s|?]"                    #Will match " {WORD}"+ any of these(. ,s?)
-    
-CASE_SENSITIVE_MATCH = True                        #if this is true it will match
-                                                   #words as defined in WORDS
-                                                   #if this is false it will match
-                                                   #UPPERCASE to UPPERCASE
-                                                   #and turn everything else into lowercase
-                                                   #including the post and match 
+REGEX_MATCH_STR = "[.| |,|s|?]"                             #Will match " {WORD}"+ any of these(. ,s?)
+
+CASE_SENSITIVE_MATCH = True                                 #if this is true it will match
+                                                            #words as defined in WORDS
+                                                            #if this is false it will match
+                                                            #UPPERCASE to UPPERCASE
+                                                            #and turn everything else into lowercase
+                                                            #including the post and match 
 
 
-POST_TIME_LIMIT = (datetime.datetime.today()
-            - datetime.timedelta(days=1))          #will only match post within
-                                                   #24 hours of posting
-                                                   #can be swapped with these keywords
-                                                   #days #seconds
-                                                   #microseconds #milliseconds
-                                                   #minute #hours
-                                                   #weeks
+POST_TIME_LIMIT = (datetime.datetime.today()                
+            - datetime.timedelta(days=1))                   #will only match post within
+                                                            #24 hours of posting
+                                                            #can be swapped with these keywords
+                                                            #days #seconds
+                                                            #microseconds #milliseconds
+                                                            #minute #hours
+                                                            #weeks
 
-SUBREDDIT_SEARCH_LIMIT = 100                       #MAX = 100 sorts by hot
+SUBREDDIT_SEARCH_LIMIT = 2                                  #MAX = 100 sorts by hot
 
-APPEARANCE_LIMIT = 1                               #if the word has appeared less then x times
-                                                   #it wont be included in the file
+APPEARANCE_LIMIT = 1                                        #if the word has appeared less then x times
+                                                            #it wont be included in the file
 
 
 #60 * 60 * 24 = 86400 secs == 1 day
-TIME_BETWEEN_SCANS = (60*60)*24                    #in seconds
-                                                   #time to wait before scaning SUBREDDIT_TARGETS
+TIME_BETWEEN_SCANS = (60*60)*24                             #in seconds
+                                                            #time to wait before scaning SUBREDDIT_TARGETS
                                         
 
 
@@ -83,6 +97,8 @@ class cvsSaverHelper():
         self.DATE = DAY.replace(hour=0,minute=0,second=0,microsecond=0)#setup var for only days
     def __eq__(self,other):
         return self.DATE == other.DATE
+    def __lt__(self,other):
+        return self.DATE < other.DATE
 
 def SaveDataToCSV(word_searchArray):
     """
@@ -97,12 +113,13 @@ def SaveDataToCSV(word_searchArray):
     RETURN_ARRAY = []#ALL WORDS PLUS APPEARENCES SEPRATED BY DATE
     for word in word_searchArray:
         TMP_APPEND_DATE_ARRAY = []#ALL APPEARENCES SEPRATED BY DATE PER WORD
+        if word.Appearences < APPEARANCE_LIMIT:#check the appearence limit
+            continue
         if word.Appearences == 0:#if there are no appearences add it to the array
             HelperClass = cvsSaverHelper(None, word.SWord)#with no appearences
             TMP_APPEND_DATE_ARRAY.append(HelperClass)
-
         for appearance in word.AppearenceLocations:#GO THROUGH ALL THE APPEARENCES
-                                                #GET THE DATE AND IF IT APPEARED BEFORE
+                                                   #GET THE DATE AND IF IT APPEARED BEFORE
             HelperClass = cvsSaverHelper(appearance.created_utc,word.SWord)
             if HelperClass not in TMP_APPEND_DATE_ARRAY:#add a new day it was found and
                 HelperClass.APPEAR += 1                 #update the appearences
@@ -111,6 +128,9 @@ def SaveDataToCSV(word_searchArray):
                 TMP_APPEND_DATE_ARRAY[TMP_APPEND_DATE_ARRAY.index(HelperClass)].APPEAR += 1
         RETURN_ARRAY.append(TMP_APPEND_DATE_ARRAY)
 
+    #sort the array before making the file so we can have a nice output
+    for thing in RETURN_ARRAY:
+        thing.sort()
 
     #Get name of the new file
     CVS_NAME = "KEYWORDS" + str(datetime.datetime.utcnow())[:10]+".csv"
@@ -121,9 +141,8 @@ def SaveDataToCSV(word_searchArray):
         for HelperClass in RETURN_ARRAY:
             tmpWriteRow = [HelperClass[0].SWord]#setup csv rows
             for DAYS in HelperClass:
-                if DAYS.APPEAR < APPEARANCE_LIMIT:#check the appearence limit
-                    continue
-                elif DAYS.APPEAR == 0:#incase you want 0 appearence words in excel
+
+                if DAYS.APPEAR == 0:#incase you want 0 appearence words in excel
                     tmpWriteRow.append("0")
                     continue              
                 else:
